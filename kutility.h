@@ -130,6 +130,14 @@ namespace kk
 			__time64_t t;
 			return _time64(&t);
 		}
+		static string GetDateTimeStr(__time64_t t)
+		{
+			tm today;
+			_localtime64_s(&today, &t);
+			char str_date[64] = { 0 };
+			strftime(str_date, sizeof(str_date), ("%Y-%m-%d_%H-%M-%S"), &today);
+			return str_date;
+		}
 		static string GetDateTimeStr()
 		{
 			__time64_t t;
@@ -137,12 +145,23 @@ namespace kk
 			tm today;
 			_localtime64_s(&today, &t);
 			char str_date[64] = { 0 };
-			strftime(str_date, sizeof(str_date), ("%Y-%m-%d %H-%M-%S"), &today);
+			strftime(str_date, sizeof(str_date), ("%Y-%m-%d_%H-%M-%S"), &today);
+			return str_date;
+		}
+		static string GetDateStr()
+		{
+			__time64_t t;
+			_time64(&t);
+			tm today;
+			_localtime64_s(&today, &t);
+			char str_date[64] = { 0 };
+			strftime(str_date, sizeof(str_date), ("%Y-%m-%d"), &today);
 			return str_date;
 		}
 		static string GetLogDateTimeStr()
 		{
-			return GetDateTimeStr() + "_" + Int64ToStr(GetDateTime());
+			__time64_t t = GetDateTime();
+			return GetDateTimeStr(t) + "_" + Int64ToStr(t);
 		}
 		static __int64 GetRunTime()
 		{
@@ -212,7 +231,7 @@ namespace kk
 		}
 		static int CreateDir(__in const string& path)
 		{
-			int error_code = -1;
+			int error_code = 0;
 			if (_access(path.c_str(), 0) == -1)
 			{
 				string::size_type pos = path.rfind('\\');
@@ -262,10 +281,10 @@ namespace kk
 			{
 				return 1;  ///< exist
 			}
-			else if (path.find(":") != string::npos)
-			{
-				return 2;  ///< available
-			}
+			//else if (path.find(":") != string::npos)
+			//{
+			//	return 2;  ///< available
+			//}
 			return 0;
 		}
 
