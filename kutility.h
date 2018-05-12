@@ -1,7 +1,8 @@
 ﻿#pragma once
-#define WIN32_LEAN_AND_MEAN
+
 #include "cstandard.h"
-#include <Windows.h>
+//#define WIN32_LEAN_AND_MEAN
+//#include <Windows.h>
 
 namespace kk
 {
@@ -255,7 +256,7 @@ namespace kk
 			}
 			return error_code;
 		}
-		static int PathIsExist(IN const string& path)
+		static int PathIsExist(__in const string& path)
 		{
 			if ((_access(path.c_str(), 0)) != -1)
 			{
