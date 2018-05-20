@@ -240,7 +240,10 @@ namespace kk
 					string base_path = path.substr(0, pos);
 					CreateDir(base_path);
 				}
-				error_code = _mkdir(path.c_str());
+				if (_access(path.c_str(), 0) == -1)
+				{
+					error_code = _mkdir(path.c_str());
+				}
 			}
 			return error_code;
 		}
