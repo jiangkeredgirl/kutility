@@ -107,22 +107,22 @@ namespace kk
 		static string GetProgramPath()
 		{
 			string fullpath;
-			char *path = nullptr;
-			wchar_t *wpath = nullptr;
 			errno_t err = 0;
+#ifdef _UNICODE
+			wchar_t *wpath = nullptr;
+			err = _get_wpgmptr(&wpath);
+			if (err == 0)
+			{
+				fullpath = WstringToString(wpath);
+			}
+#else
+			char *path = nullptr;
 			err = _get_pgmptr(&path);
 			if (err == 0)
 			{
 				fullpath = path;
 			}
-			else
-			{
-				err = _get_wpgmptr(&wpath);
-				if (err == 0)
-				{
-					fullpath = WstringToString(wpath);
-				}
-			}
+#endif
 			return fullpath;
 		}
 		static __int64 GetDateTime()
