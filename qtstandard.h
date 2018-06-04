@@ -30,7 +30,10 @@
 #include <QProgressBar>
 #include <QMenuBar>
 #include <QButtonGroup>
-#include <QMainWindow> 
+#include <QMainWindow>
+#include <QTreeWidget>
+#include <QTableWidget>
+#include <QHeaderView>
 
 
 #endif // QTSTANDARD_H
