@@ -38,13 +38,6 @@ namespace kk
 		}TVerionInfo;
 
 	public:
-
-		static string Int64ToStr(__in __int64 int_value, int radix = 10)
-		{
-			char sz_value[129] = { 0 };
-			_i64toa_s(int_value, sz_value, 128, radix);
-			return sz_value;
-		}
 		static string WstringToString(const wstring& ws)
 		{
 			size_t   i;
@@ -161,16 +154,15 @@ namespace kk
 		static string GetLogDateTimeStr()
 		{
 			__time64_t t = GetDateTime();
-			return GetDateTimeStr(t) + "_" + Int64ToStr(t);
+			return GetDateTimeStr(t) + "_" + to_string(t);
 		}
 		static __int64 GetRunTime()
 		{
 			__int64 runtime = clock();
 			return runtime;  /// millisecond 
 		}
-		static string GetRunTimeStr()  ///< h:%d:m:%d:s:%d:ms:%d
+		static string GetRunTimeStr(__int64 runtime)  ///< h:%d:m:%d:s:%d:ms:%d
 		{
-			__int64 runtime = GetRunTime();
 			int h = static_cast<int>((runtime) / (1000 * 3600));
 			int m = ((runtime) % (1000 * 3600)) / (1000 * 60);
 			int s = (((runtime) % (1000 * 3600)) % (1000 * 60)) / 1000;
