@@ -131,15 +131,13 @@ namespace kk
 			strftime(str_date, sizeof(str_date), ("%Y-%m-%d_%H-%M-%S"), &today);
 			return str_date;
 		}
-		static string GetDateTimeStr()
+		static __int64 GetDateTime(const string& strDateTime)
 		{
-			__time64_t t;
-			_time64(&t);
-			tm today;
-			_localtime64_s(&today, &t);
-			char str_date[64] = { 0 };
-			strftime(str_date, sizeof(str_date), ("%Y-%m-%d_%H-%M-%S"), &today);
-			return str_date;
+			tm dateTime = { 0 };
+			sscanf_s(strDateTime.c_str(), "%d-%d-%d_%d-%d-%d"
+				, &dateTime.tm_year, &dateTime.tm_mon, &dateTime.tm_mday
+				, &dateTime.tm_hour, &dateTime.tm_min, &dateTime.tm_sec);
+			return mktime(&dateTime);
 		}
 		static string GetDateStr()
 		{
@@ -168,10 +166,23 @@ namespace kk
 			int s = (((runtime) % (1000 * 3600)) % (1000 * 60)) / 1000;
 			int ms = (((runtime) % (1000 * 3600)) % (1000 * 60)) % 1000;
 			char str_time[128] = { 0 };
-			sprintf_s(str_time, ("h:%d:m:%d:s:%d:ms:%d"), h, m, s, ms);
+			sprintf_s(str_time, ("%dh:%dm:%ds:%dms"), h, m, s, ms);
 			return str_time;
 		}
-
+		static __int64 GetRunTime(const string& strRunTime)  ///< h:%d:m:%d:s:%d:ms:%d
+		{
+			__int64 runtime = 0;
+			int h = 0;
+			int m = 0;
+			int s = 0;
+			int ms = 0;
+			sscanf_s(strRunTime.c_str(), "%dh:%dm:%ds:%dms", &h, &m, &s, &ms);
+			runtime += h * (1000 * 3600);
+			runtime += m * (1000 * 60);
+			runtime += s *  1000;
+			runtime += ms;
+			return runtime;
+		}
 		static int ReadFile(__in const string& filename, __out string& file_content)
 		{
 			int error_code = -1;
