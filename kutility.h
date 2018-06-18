@@ -137,6 +137,8 @@ namespace kk
 			sscanf_s(strDateTime.c_str(), "%d-%d-%d_%d-%d-%d"
 				, &dateTime.tm_year, &dateTime.tm_mon, &dateTime.tm_mday
 				, &dateTime.tm_hour, &dateTime.tm_min, &dateTime.tm_sec);
+			dateTime.tm_year -= 1900;
+			dateTime.tm_mon -= 1;
 			return mktime(&dateTime);
 		}
 		static string GetDateStr()
