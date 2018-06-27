@@ -34,6 +34,6 @@
 #include <QTreeWidget>
 #include <QTableWidget>
 #include <QHeaderView>
-
+#include <QColor> 
 
 #endif // QTSTANDARD_H
