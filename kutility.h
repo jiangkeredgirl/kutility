@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+
 #include "cstandard.h"
 //#define WIN32_LEAN_AND_MEAN
 //#include <Windows.h>
@@ -101,21 +104,24 @@ namespace kk
 		{
 			string fullpath;
 			errno_t err = 0;
-#ifdef _UNICODE
-			wchar_t *wpath = nullptr;
-			err = _get_wpgmptr(&wpath);
-			if (err == 0)
+			if (_wpgmptr != nullptr)
 			{
-				fullpath = WstringToString(wpath);
+				wchar_t *wpath = nullptr;
+				err = _get_wpgmptr(&wpath);
+				if (err == 0)
+				{
+					fullpath = WstringToString(wpath);
+				}
 			}
-#else
-			char *path = nullptr;
-			err = _get_pgmptr(&path);
-			if (err == 0)
+			else if (_pgmptr != nullptr)
 			{
-				fullpath = path;
+				char *path = nullptr;
+				err = _get_pgmptr(&path);
+				if (err == 0)
+				{
+					fullpath = path;
+				}
 			}
-#endif
 			return fullpath;
 		}
 		static __int64 GetDateTime()
@@ -181,7 +187,7 @@ namespace kk
 			sscanf_s(strRunTime.c_str(), "%dh:%dm:%ds:%dms", &h, &m, &s, &ms);
 			runtime += h * (1000 * 3600);
 			runtime += m * (1000 * 60);
-			runtime += s *  1000;
+			runtime += s * 1000;
 			runtime += ms;
 			return runtime;
 		}
@@ -298,7 +304,3 @@ namespace kk
 
 	};
 }
-
-
-
-
