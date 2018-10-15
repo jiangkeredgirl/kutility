@@ -4,6 +4,13 @@
 #pragma warning(disable:4996)
 
 #include "cstandard.h"
+
+#ifdef UNICODE
+typedef wstring tstring;
+#else
+typedef  string tstring;
+#endif // !UNICODE
+
 //#define WIN32_LEAN_AND_MEAN
 //#include <Windows.h>
 
@@ -69,6 +76,22 @@ namespace kk
 			delete[]_Dest;
 			setlocale(LC_ALL, "C");
 			return result;
+		}
+		static tstring StrToTStr(const string& str)
+		{
+#ifdef UNICODE
+			return StringToWstring(str);
+#else
+			return str;
+#endif // !UNICODE
+		}
+		static string TStrToStr(const tstring& tstr)
+		{
+#ifdef UNICODE
+			return WstringToString(tstr);
+#else
+			return tstr;
+#endif // !UNICODE
 		}
 		static string GetFileName(__in const string& path_name)
 		{
